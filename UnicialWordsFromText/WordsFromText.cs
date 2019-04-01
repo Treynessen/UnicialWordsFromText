@@ -56,8 +56,10 @@ namespace Trane.Text.Parsing
             }
         }
 
-        private void SetWord(string word)
+        private void SetWord(string word, Func<string, string> getParentWord = null)
         {
+            if (getParentWord != null)
+                word = getParentWord(word);
             int hashCellNumber = GetHashCellNumber(word);
             if (hashTable[hashCellNumber] == null)
             {
