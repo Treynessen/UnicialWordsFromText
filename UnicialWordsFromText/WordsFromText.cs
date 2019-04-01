@@ -11,6 +11,7 @@ namespace Trane.Text.Parsing
         private int hashCellSize;
         private LinkedList<string>[] hashTable;
         private string availableSymbols;
+        private Func<string, string> getParentWord;
 
         public IEnumerable<string> Words
         {
@@ -23,7 +24,7 @@ namespace Trane.Text.Parsing
             }
         }
 
-        public WordsFromText(string path, int hashCellSize, string availableSymbols)
+        public WordsFromText(string path, int hashCellSize, string availableSymbols, Func<string, string> getParentWord = null)
         {
             if (hashCellSize == 0) throw new ArgumentException();
             if (string.IsNullOrEmpty(path)) throw new ArgumentException();
@@ -32,6 +33,7 @@ namespace Trane.Text.Parsing
             this.hashCellSize = hashCellSize;
             hashTable = new LinkedList<string>[GetHTSize(path)];
             this.availableSymbols = availableSymbols;
+            this.getParentWord = getParentWord;
             ParseText(path);
         }
 
@@ -56,7 +58,7 @@ namespace Trane.Text.Parsing
             }
         }
 
-        private void SetWord(string word, Func<string, string> getParentWord = null)
+        private void SetWord(string word)
         {
             if (getParentWord != null)
                 word = getParentWord(word);
